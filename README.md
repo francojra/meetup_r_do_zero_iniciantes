@@ -1,10 +1,10 @@
 # R do Zero para iniciantes 
 
-## Comunidade R-Ladies Natal
-## Instrutora: Jeanne Franco
-## Dia: 21 de maio
-## Horário: 18:45 horas
-## Local: Via Zoom
+### Comunidade R-Ladies Natal
+### Instrutora: Jeanne Franco
+### Dia: 21 de maio
+### Horário: 18:45 horas
+### Local: Via Zoom
 
 ### Conteúdo:
 
