@@ -3,14 +3,14 @@
 # Ministrante: Jeanne Franco
 # Data: 21/05/21
 
-# Testes Cl·ssicos ----------------------------------------------------------------------------
+# Testes Cl√°ssicos ----------------------------------------------------------------------------
 
 # Amostras Simples ----------------------------------------------------------------------------
 
-# Qual a mÈdia?
-# O valor mÈdio È significativamente diferente do esperado?
-# Qual o nÌvel de incerteza do valor mÈdio?
-# Os valores s„o normalmente distribuÌdos?
+# Qual a m√©dia?
+# O valor m√©dio √© significativamente diferente do esperado?
+# Qual o n√≠vel de incerteza do valor m√©dio?
+# Os valores s√£o normalmente distribu√≠dos?
 # Existem outliers?
 
 data("cars")
@@ -21,11 +21,12 @@ hist(cars$speed)
 y <- cars$speed
 y 
 
-# Gr·fico para teste de normalidade -----------------------------------------------------------
+# Gr√°fico para teste de normalidade -----------------------------------------------------------
 
 # quantile-quantile plot
-# Dados normalmente distribuÌdos = Linha reta
-# Amostras pequenas pode indicar pouca credibilidade no teste de normalidade
+# Dados normalmente distribu√≠dos = Linha reta
+# Amostras pequenas podem indicar pouca credibilidade no teste 
+# de normalidade
 
 qqnorm(y)
 qqline(y, lty = 2) # Plot da linha
@@ -36,10 +37,10 @@ qqline(y, lty = 2) # Plot da linha
 
 # Shapiro.wilk ---------------------------------------------------------------------------------------------------------
 
-# HipÛtese nula = dados normalmente distribuÌdos
+# Hip√≥tese nula = dados normalmente distribu√≠dos
 
-shapiro.test(y) # Resultado: distribuiÁ„o normal (valor de p>0.05)
-# Aceita-se a hipÛtese alternativa
+shapiro.test(y) # Resultado: distribui√ß√£o normal (valor de p>0.05)
+# Aceita-se a hip√≥tese alternativa
 
 x <- exp(rnorm(30))
 shapiro.test(x) 
@@ -47,11 +48,11 @@ shapiro.test(x)
 # Skew e Kurtosis -----------------------------------------------------------------------------
 
 # Skew = assimetria
-# Skew mede atÈ que ponto uma distribuiÁ„o apresenta caudas longas, 
-# de um lado ou de outro da distribuiÁ„o. 
-# Uma distribuiÁ„o normal apresenta skew = 0, pois ela È simÈtrica.
-# Quando a cauda se distribui ‡ direita da mÈdia: skew positiva; 
-# Quando a cauda est· esticada ‡ esquerda da mÈdia: skew È negativa.
+# Skew mede at√© que ponto uma distribui√ß√£o apresenta caudas longas, 
+# de um lado ou de outro da distribui√ß√£o. 
+# Uma distribui√ß√£o normal apresenta skew = 0, pois ela √© sim√©trica.
+# Quando a cauda se distribui √† direita da m√©dia: skew positiva; 
+# Quando a cauda est√° esticada √† esquerda da m√©dia: skew √© negativa.
 
 x1 <- seq(0, 4, 0.01)
 
@@ -61,27 +62,29 @@ text(2.7, 0.5, "positive skew")
 plot(4-x1, dgamma(x1, 2, 2), type = "l", ylab = "f(x)", xlab = "x", col = "red")
 text(1.3, 0.5, "negative skew")
 
-# FunÁ„o para calcular a assimetria com os dados de x
+# Fun√ß√£o para calcular a assimetria com os dados de x
 
 hist(x)
 skew <- function(x){
-  m3 <- sum((x-mean(x)) ^ 3) / length(x)
+  m3 <- sum((x-mean(x)) ^ 3) / length(x) # Terceiro momento da m√©dia
   s3 <- sqrt(var(x)) ^ 3
   m3/s3
 }
 
 skew(x) # Skew positiva
 
-skew(x) / sqrt(6 / length(x)) # Para saber se È diferente de zero
+skew(x) / sqrt(6 / length(x)) # Para saber se √© diferente de zero
+# Fazemos um test t dividindo o valor observado de skew pelo erro padrao
 
-1-pt(2.949, 28) # Probabilidade de obter um valor de 2.949 ao acaso 
+1-pt(2.685, 28) # Probabilidade de obter um valor de 2.685 ao acaso 
 # quando o valor de skew for zero.
-# Os dados apresentam significante n„o normalidade (p<0.0032)
+# 28 graus de liberdade
+# Os dados apresentam significante n√£o normalidade p=0.006
 
-# Kurtosis = relaÁ„o com o pico de uma distribuiÁ„o em relaÁ„o ao plano do eixo x. 
-# Uma distribuiÁ„o c˙rtica È diferente da distribuiÁ„o normal em forma de sino. 
-# DistribuiÁ„o mais plana È chamada platic˙rtica e uma distribuiÁ„o mais aguda 
-# chamada leptoc˙rtica.
+# Kurtosis = rela√ß√£o com o pico de uma distribui√ß√£o em rela√ß√£o ao plano do eixo x. 
+# Uma distribui√ß√£o c√∫rtica √© diferente da distribui√ß√£o normal em forma de sino. 
+# Distribui√ß√£o mais plana √© chamada platic√∫rtica e uma distribui√ß√£o mais aguda 
+# chamada leptoc√∫rtica.
 
 plot(-200:200, 
      dcauchy(-200:200, 0, 10), type = "l", ylab = "f(x)", xlab = "", yaxt = "n",
@@ -92,7 +95,7 @@ plot(xv,
      exp(-abs(xv) ^ 6), type = "l", ylab = "f(x)", xlab = "", yaxt = "n",
      xaxt = "n", main = "platykurtosis", col = "red")
 
-# FunÁ„o para calcular a curtose com os dados de x
+# Fun√ß√£o para calcular a curtose com os dados de x
 
 kurtosis <- function(x) {
   m4 <- sum((x-mean(x)) ^ 4) / length(x)
@@ -103,11 +106,13 @@ kurtosis(x)
 
 # Teste Kolmogorov-Smirnov --------------------------------------------------------------------
 
-# Determina se uma distribuiÁ„o subjacente difere de uma distribuiÁ„o teÛrica
-# O teste detecta diferenÁa nas amostras em relaÁ„o a escla, skewness
-# Para amostras simples testa a dist‚ncia entre dados observados e 
-# uma distribuiÁ„o ideal.
-# Checa a normalidade de uma distribuiÁ„o
+# Analisa o formato de uma distribui√ß√£o de dados retirados de uma popula√ß√£o
+# a qual queremos saber a m√©dia
+# Determina se uma distribui√ß√£o subjacente difere de uma distribui√ß√£o te√≥rica
+# O teste detecta diferen√ßa nas amostras em rela√ß√£o a escla, skewness
+# Para amostras simples testa a dist√¢ncia entre dados observados e 
+# uma distribui√ß√£o ideal.
+# Checa a normalidade de uma distribui√ß√£o
 
 # Teste para amostra simples
 
@@ -127,139 +132,149 @@ prob.germ <- c(0.676434301, 0.448928425, 0.853052609,
 ks.test(prob.germ, "pnorm")
 hist(prob.germ)
 
-# Resultado: p < 0.05; rejeita-se a hipÛtese nula, distribuiÁ„o diferente da 
+# Resultado: p < 0.05; rejeita-se a hip√≥tese nula, distribui√ß√£o diferente da 
 # normal
 
 # Teste com duas amostras ---------------------------------------------------------------------
 
-# Comparando vari‚ncias: Fisher's F test, var.test
-# Comparando mÈdias: Student's t test, t.test
-# Comparando mÈdias com erros nao normais: Wilcoxon's rank test, wilcox.test
-# Comparando duas proporÁıes: binomial test, prop.test
+# Comparando vari√¢ncias: Fisher's F test, var.test
+# Comparando m√©dias: Student's t test, t.test
+# Comparando m√©dias com erros nao normais: Wilcoxon's rank test, wilcox.test
+# Comparando duas propor√ß√µes: binomial test, prop.test
 
 # Pressupostos
 
-# Vari‚ncia
+# Vari√¢ncia
 
 x <- rnorm(240)
 y <- rnorm(300)
 var(x)
 var(y)
-var.test(x, y) # Amostras n„o apresentam diferenÁas na vari‚ncia
+var.test(x, y) # Amostras n√£o apresentam diferen√ßas na vari√¢ncia
 
 
 # Teste t de Student (grupos independentes) ----------------------------------------------------------------------------
 
-# Amostras independentes, vari‚ncias constantes, erros normalmente distribuÌdos
-# Teste paramÈtrico
+# Amostras independentes, vari√¢ncias constantes, erros normalmente distribu√≠dos
+# Teste param√©trico
 
 controle  <- c(24, 35, 32, 23, 25, 22, 27, 25, 21, 42, 20, 24)
 experimento <- c(50, 64, 57, 52, 58, 51, 50, 56, 55, 54, 49, 48)
 
 shapiro.test(controle)
 shapiro.test(experimento)
-var.test(controle, experimento) # Amostras n„o apresentam diferenÁas na vari‚ncia
-t.test(controle, experimento) # MÈdias das amostras s„o diferentes
-# C·lculo da mÈdia, sd, vari‚ncia e boxplot
+var.test(controle, experimento) # Amostras n√£o apresentam diferen√ßas na vari√¢ncia
+t.test(controle, experimento) # M√©dias das amostras s√£o diferentes
+# C√°lculo da m√©dia, sd, vari√¢ncia e boxplot
 
 # Amostras pareadas - Teste t pareado ---------------------------------------------------------
 
-# ObservaÁıes pareadas
-# CorrelaÁıes entre duas medidas
-# S„o medidas de um mesmo indivÌduo ou tomadas de um mesmo local
+# Observa√ß√µes pareadas
+# Correla√ß√µes entre duas medidas
+# S√£o medidas de um mesmo indiv√≠duo ou tomadas de um mesmo local
 
 temp.veg  <- c(22, 26, 27, 25, 28, 30, 25, 21, 23, 27, 25, 22) 
-# Solo com vegetaÁ„o
+# Solo com vegeta√ß√£o
 temp.solo.exp <- c(35, 31, 37, 38, 40, 32, 31, 33, 37, 32, 30, 33) 
 # Solo exposto
 
 t.test(temp.veg, temp.solo.exp, paired = TRUE) 
-# MÈdias das amostras apresentam diferenÁas
+# M√©dias das amostras apresentam diferen√ßas
 
 # Testes feitos ANTES e DEPOIS de aplicar algum tratamento apresentam
 # amostras pareadas, pois utilizam o mesmo grupo no experimento.
 
 # Teste Wilcoxon -------------------------------------------------------------------------------------------------------
 
-## Teste n„o paramÈtrico alternativo ao teste t 
+## Teste n√£o param√©trico alternativo ao teste t 
 
 x <- runif(300)
 y <- runif(300)
 
-# Antes devemos testar normalidade para saber se os dados s„o
-# ou n„o paramÈtricos
+# Antes devemos testar normalidade para saber se os dados s√£o
+# ou n√£o param√©tricos
 
 shapiro.test(x) # Dados diferentes da dist. normal
-var.test(x, y) # Vari‚ncias n„o s„o diferentes
+var.test(x, y) # Vari√¢ncias n√£o s√£o diferentes
 qqnorm(x)
 qqline(x)
 qqnorm(y)
 qqline(y)
 
-# Caso os dados n„o sejam paramÈtricos usar o teste:
+# Caso os dados n√£o sejam param√©tricos usar o teste:
 
-wilcox.test(x, y) # MÈdias n„o apresentam diferenÁas caso p>0.05
+wilcox.test(x, y) # M√©dias n√£o apresentam diferen√ßas caso p>0.05
 mean(x)
 mean(y)
 
-# CorrelaÁ„o e covari‚ncia --------------------------------------------------------------------
+# Correla√ß√£o e covari√¢ncia --------------------------------------------------------------------
 
-# Duas vari·veis contÌnuas s„o relacionadas?
+# Duas vari√°veis cont√≠nuas s√£o relacionadas?
+# Covari√¢ncia e correla√ß√£o: ambas medem a rela√ß√£o linear entre duas variaveis
+# Covari√¢ncia: valores n√£o sao padronizados e variam de menos a mais infinito
+# Correla√ß√£o: coeficientes padronizados e variam de 1 a -1
 
 data("cars")
 var(cars$dist)
 var(cars$speed)
 
 var(cars$dist, cars$speed) 
-# Covari‚ncia
+# Covari√¢ncia
 
 var(cars$dist, cars$speed) / sqrt(var(cars$dist) * var(cars$speed)) 
-# Coeficiente de correlaÁ„o 
+# Coeficiente de correla√ß√£o pode ser calculado a partir da covari√¢ncia
 
-cor(cars$dist, cars$speed) # CorrelaÁ„o que gera mesmo resultado
-# O defaul do R usa p mÈtodo de Pearson
+cor(cars$dist, cars$speed) # Correla√ß√£o que gera mesmo resultado
+# O defaul do R usa p m√©todo de Pearson
 
-cor.test(cars$dist, cars$speed) # Fornece informaÁıes mais detalhadas da an·lise
-# Valor de t, graus de liberdade, valor de p e intervalos de confianÁa
+cor.test(cars$dist, cars$speed) # Fornece informa√ß√µes mais detalhadas da an√°lise
+# Valor de t, graus de liberdade, valor de p e intervalos de confian√ßa
 
-plot(cars$dist, cars$speed) # Gr·fico
+plot(cars$dist, cars$speed) # Gr√°fico
 
-# CorrelaÁ„o de Pearson: teste paramÈtrico -----------------------------------------------------------------------------
+# Correla√ß√£o de Pearson: teste param√©trico -----------------------------------------------------------------------------
+# Pressupostos: Normalidade, homocedasticidade, rela√ß√£o linear e sem outliers
 
-set.seed(12)
-a <- rnorm(40, mean = 20, sd = 1)
-set.seed(123)
-b <- rnorm(40, mean = 20, sd = 1)
+datasets::iris
+tibble(iris)
+plot(iris$Sepal.Length ~ iris$Petal.Length)
+abline(lm(iris$Sepal.Length ~ iris$Petal.Length))
 
-shapiro.test(a) # p>0.05 = paramÈtrico
-hist(a)
-shapiro.test(b) # p>0.05 = paramÈtrico
-hist(b)
+shapiro.test(iris$Sepal.Length) 
+hist(iris$Sepal.Length)
+boxplot(iris$Sepal.Length) # verifica outliers
+shapiro.test(iris$Petal.Length) 
+hist(iris$Petal.Length)
+boxplot(iris$Petal.Length)
 
-cor.test(a, b, method = "pearson")
-plot(a, b)
-abline(lm(a ~ b)) # Acrescenta linha ao gr·fico
+# Homocedasticidade
+mod_reg <- lm(iris$Sepal.Length ~ iris$Petal.Length)
+plot(mod_reg) # quanto mais reta a linha vermelha e mais dispersos os pontos
+# melhor o modelo - Mais homocedastico
 
-# CorrelaÁ„o de Kendall: teste n„o paramÈtrico -------------------------------------------------------------------------
+cor.test(iris$Sepal.Length, iris$Petal.Length, method = "pearson")
 
-# O coeficiente de correlaÁ„o Tau de Kendall serve para verificar se existe 
-# correlaÁ„o entre duas vari·veis ordinais. … um mÈtodo adequado quando 
-# amostras tÍm tamanhos reduzidos, pois o mÈtodo È mais preciso.
+# Exemplo correla√ß√£o spearman - Teste n√£o param√©trico ------------------------------------------------------------------
 
-# Vari·veis devem ter o mesmo comprimento
-# Gerando valores aleatÛrios
+cor.test(iris$Sepal.Length, iris$Petal.Length, method = "spearman")
 
-set.seed(1234)
-x <- runif(60)
-x
-set.seed(12345)
-y <- runif(60)
-y
+# Correla√ß√£o de Kendall: teste n√£o param√©trico -------------------------------------------------------------------------
 
-shapiro.test(x) # p<0.05 = n„o paramÈtrico
-shapiro.test(y) # p<0.05 = n„o paramÈtrico
+# O coeficiente de correla√ß√£o Tau de Kendall serve para verificar se existe 
+# correla√ß√£o entre duas vari√°veis ordinais. √â um m√©todo adequado quando 
+# amostras t√™m tamanhos reduzidos, pois o m√©todo √© mais preciso.
 
-cor.test(x, y, method = "kendall") 
-plot(x, y)
-abline(lm(x ~ y))
+# Vari√°veis devem ter o mesmo comprimento
+# Gerando valores aleat√≥rios
+
+datasets::trees
+tibble(trees)
+
+shapiro.test(trees$Girth) # p>0.05 = param√©trico
+shapiro.test(trees$Volume) # p<0.05 = n√£o param√©trico
+
+cor.test(trees$Girth, trees$Volume, method = "kendall") 
+cor.test(trees$Girth, trees$Volume, method = "pearson") 
+plot(trees$Girth, trees$Volume, col = "darkblue")
+
 
