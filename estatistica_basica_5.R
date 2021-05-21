@@ -277,4 +277,4 @@ cor.test(trees$Girth, trees$Volume, method = "kendall")
 cor.test(trees$Girth, trees$Volume, method = "pearson") 
 plot(trees$Girth, trees$Volume, col = "darkblue")
 
-
+###
